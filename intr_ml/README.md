@@ -7,6 +7,6 @@
 ---
 >关于线性拟合(20p)
 >>[最小二乘法原理](http://blog.csdn.net/orbit/article/details/12793343)
->>解答过程
+>>>解答过程
 ---
-![]()
+![](https://github.com/jwcesign/machine_learning/blob/master/intr_ml/pic/IMG_20170321_130731.jpg)
