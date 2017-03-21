@@ -4,4 +4,4 @@
 ![](http://images0.cnblogs.com/blog2015/771535/201508/041623504236939.jpg) 
 ---
 `用官方的话来说，所谓K近邻算法，即是给定一个训练数据集，对新的输入实例，在训练数据集中找到与该实例最邻近的K个实例（也就是上面所说的K个邻居）， 这K个实例的多数属于某个类，就把该输入实例分类到这个类中。`
->>[相关资料](http://www.cnblogs.com/ybjourney/p/4702562.html)
+>[相关资料](http://www.cnblogs.com/ybjourney/p/4702562.html)
