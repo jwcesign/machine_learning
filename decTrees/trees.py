@@ -31,6 +31,7 @@ def splitDataSet(dataSet,axis,value):
             reducedFeatVec.extend(featVec[axis+1:])
             retDataSet.append(reducedFeatVec)
     return retDataSet
+###寻找最优划分的特征
 def chooseBestFeatureTopSplit(dataSet):
     numFeatures = len(dataSet[0])-1
     baseEntropy = calcShannonEnt(dataSet)
@@ -72,3 +73,26 @@ def createTree(dataSet,labels):
         subLabels = labels[:]
         myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet,bestFeat,value),subLabels)
     return myTree
+###存储决策树模型
+def storeTree(inputTree,filename):
+    import pickle
+    fw = open(filename,'w')
+    pickle.dump(inputTree,fw)
+    fw.close()
+###获取决策树模型
+def grabTree(filename):
+    import pickle
+    fr = open(filename)
+    return pickle.load(fr)
+###根据决策树模型分类
+def classify(inputTree,featLabels,testVec):
+    firstStr = inputTree.keys()[0]
+    secondDict = inputTree[firstStr]
+    featIndex = featLabels.index(firstStr)
+    for key in secondDict.keys():
+        if testVec[featIndex] == key:
+            if type(secondDict[key]).__name__=='dict':
+                classLabel = classify(secondDict[key],featLabels,testVec)
+            else:
+                classLabel = secondDict[key]
+    return classLabel
