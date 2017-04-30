@@ -22,5 +22,6 @@
 ####  不能被打散
 ![](https://pic4.zhimg.com/v2-64faf9d2dc907120bbc9d859b35677a3_b.png) 
 ####  除了这种情况都可以
+>[相关资料](https://www.zhihu.com/question/38607822)
 ---
 
