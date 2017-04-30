@@ -18,10 +18,9 @@
 ---
 `对于一个假设空间H，如果存在m个数据样本能够被假设空间H中的函数按所有可能的 种形式分开 ，则称假设空间H能够把m个数据样本打散（shatter）。假设空间H的VC维就是能打散的最大数据样本数目m。若对任意数目的数据样本都有函数能将它们shatter，则假设空间H的VC维为无穷大。`
 
+#### EX
 ![](https://pic3.zhimg.com/v2-7492d14da3e2b248e2c4971f1937ad12_b.png) 
-####  不能被打散
 ![](https://pic4.zhimg.com/v2-64faf9d2dc907120bbc9d859b35677a3_b.png) 
-####  除了这种情况都可以
 >[相关资料](https://www.zhihu.com/question/38607822)
 ---
 
