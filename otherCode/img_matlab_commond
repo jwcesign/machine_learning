@@ -1,0 +1,7 @@
+图片读取:data=imread('img')
+图片写出：imwrite(data,'bb.png')
+显示图片： imshow(data)
+图片灰度化：gdata=rgb2gray(data)
+二值化图片：im2bw(gdata,suit_val)
+根据二值图片检测边缘：
+edge(gdata,'method'): method有sobel，loG，和canny
