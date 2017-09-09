@@ -217,3 +217,21 @@ plt.show()
 ### 总结
 * 各个模型的用处不一样，如对噪声的反映
 * 各个模型的参数会对模型产生影响，用help(model_name)查看参数解释
+### 补充
+#### 数据降维
+* ***PAC(principal component analysis)***
+  * PCA的本质就是找一些投影方向，使得数据在这些投影方向上的方差最大，而且这些投影方向是相互正交的。***(忽略标签的影响)***
+  ~~~python
+  from sklearn.decomposition import PCA
+  # 参数为要降到的维数, 要保留多少的相同性
+  pca = PCA(n_components=2)
+  x = pca.fit(x).transform(x)
+  ~~~
+* ***LDA(Linear Discriminant Analysis)***
+  * 相比于PCA，***加入了标签对降维的影响***
+  * LDA不适合对非高斯分布样本进行降维。
+  ~~~python
+  from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+  lda = LinearDiscriminantAnalysis((n_components=2))
+  x_r2 = lda.fit(x,y).transform(x)
+  ~~~
