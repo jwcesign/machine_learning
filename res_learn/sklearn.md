@@ -16,6 +16,29 @@ model = model.fit(x[:, np.newaxis], y)
 model.named_steps['linear'].coef_
 ~~~
 
+## 关于画图
+~~~python
+import numpy as np
+import matplotlib.pyplot as plt
+import mpl_toolkits.mplo3d import Axes3D
+# 画三维散点图
+figure = plt.figure()
+ax = Axes3D(figure)
+ax.scatter(x,y,z,c='r',marker='*')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('z')
+plt.show()
+# 画三维线
+ax.plot3D(x,y,z)
+plt.show()
+# 画面
+x,y = np.meshgrid(x,y)
+z = x+y
+ax.plot_surface(x,y,z,cmap='rainbow')
+plt.show()
+~~~
+
 ## 线性回归：
 ### 普通最小二乘法
 * 对各个变量都**公平**，其系数估计依赖模型各项相互独立
@@ -176,7 +199,14 @@ plt.scatter(x,y)
 plt.plot(x,predict(x1),color="blue")
 plt.show()
 ~~~
-
+### KernelRidge
+* Kernel ridge regression (KRR) combines ridge regression (linear least squares with l2-norm regularization) with the kernel trick.
+* 代码
+~~~python
+from sklearn.kernel_ridge import KernelRidge
+clf = KernelRidge(..parameter..)
+clf.fit(x,y)
+~~~
 
 ### 实践
 * 对于岭回归
@@ -220,7 +250,7 @@ plt.show()
 ### 补充
 #### 数据降维
 * ***PAC(principal component analysis)***
-  * PCA的本质就是找一些投影方向，使得数据在这些投影方向上的方差最大，而且这些投影方向是相互正交的。***(忽略标签的影响)***
+  * PCA的本质就是找一些投影方向，使得数据在这些投影方向上的方差最大，而且这些投影方向是相互正交的。***(忽略标签的影响,希望降维后的数据能够保持最多的信息)***
   ~~~python
   from sklearn.decomposition import PCA
   # 参数为要降到的维数, 要保留多少的相同性
@@ -229,9 +259,35 @@ plt.show()
   ~~~
 * ***LDA(Linear Discriminant Analysis)***
   * 相比于PCA，***加入了标签对降维的影响***
-  * LDA不适合对非高斯分布样本进行降维。
+  * LDA不适合对非高斯分布样本进行降维(**希望数据在降维后能够很容易地被区分开来**)。
   ~~~python
   from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
   lda = LinearDiscriminantAnalysis((n_components=2))
   x_r2 = lda.fit(x,y).transform(x)
+  ~~~
+
+
+## Support Vector Machine
+* SVMs are a set of supervised learning methods used for classification, regression and outliers detection
+* The advantage:
+  1. Effective in high dimensional spaces.
+  2. Still effective in cases where number of dimensional is greater than the number of samples.
+  3. 核函数可选:
+
+  ![img](http://scikit-learn.org/stable/_images/sphx_glr_plot_iris_0012.png)
+  4. 代码
+  ~~~python
+  # 对于核函数的选择，主要是linear和RBF(高斯核心函数)
+  # SVC，模型构建可选OVR,OVO等
+  from sklearn import svm
+  clf = svm.SVC()
+  clf.fit(x,y)
+  clf.predict(x_test)
+  # LinearSVC,采用OVR的模型构建,这个只有linear核心函数
+  clf = scm.LinearSVC()
+  lin_clf.fit(x,y)
+  # 画图技巧
+  # x=[2d],会把类区分出来
+  plt.scatter(x[:,0],x[:,1],c=y)
+
   ~~~
