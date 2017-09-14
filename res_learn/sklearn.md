@@ -295,6 +295,38 @@ plt.show()
 ~~~python
 x = [...]
 y = [0,0,0,0,0,0,0,0,0,0,1,1,1]
+# 还有sample_weight可以设置
 clf = svm.SVC(linear='some_one',class_weight={1:10})
 clf.fit(x,y)
+~~~
+
+## Support Vector Regression
+* svm.SVR()
+* 代码
+~~~python
+from sklearn.svm import SVR
+# 选择kernel，设置相关参数
+clf = SVR(kernel='kernel',...)
+clf.fit(x,y)
+~~~
+* 图示
+
+![img](http://scikit-learn.org/stable/_images/sphx_glr_plot_svm_regression_001.png)
+
+* 从图示可以看出：***The model produced by support vector classification (as described above) depends only on a subset of the training data***
+
+## novelty detection
+* 用于非监督学习
+* OneClassSVM:
+~~~python
+
+~~~
+
+### 特征选择（百分比，结合label选择）
+* 代码
+~~~python
+from sklearn import feature_selection
+tran = feature_selection.SelectPercentile(feature_selection.f_classif)
+# 设置percentile以设置特征选取百分比
+x = tran.fit(x,y).transform(x)
 ~~~
