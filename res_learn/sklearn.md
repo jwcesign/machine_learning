@@ -291,3 +291,10 @@ plt.show()
   plt.scatter(x[:,0],x[:,1],c=y)
 
   ~~~
+* 对于类别不平衡的数据，可以通过设置SVM的class_weight={label: weight}来改善模型
+~~~python
+x = [...]
+y = [0,0,0,0,0,0,0,0,0,0,1,1,1]
+clf = svm.SVC(linear='some_one',class_weight={1:10})
+clf.fit(x,y)
+~~~
