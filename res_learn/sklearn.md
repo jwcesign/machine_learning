@@ -319,8 +319,16 @@ clf.fit(x,y)
 * 用于非监督学习
 * OneClassSVM:
 ~~~python
-
+x=[...]
+clf = svm.OneClassSVM(kernel='rbf',gamma=0.1)
+clf.fit(x)
+clf.predict(x_test)
 ~~~
+* 图示
+![img](http://scikit-learn.org/stable/_images/sphx_glr_plot_oneclass_001.png)
+
+## Kernel functions
+* 类型：**linear,polynomial,rbf,sigmoid**
 
 ### 特征选择（百分比，结合label选择）
 * 代码
@@ -330,3 +338,38 @@ tran = feature_selection.SelectPercentile(feature_selection.f_classif)
 # 设置percentile以设置特征选取百分比
 x = tran.fit(x,y).transform(x)
 ~~~
+
+## SGD（随机梯度下降）
+* Stochastic Gradient Descent (SGD) is a simple yet very efficient approach to discriminative learning of linear classifiers under convex loss functions such as (linear) Support Vector Machines and Logistic Regression.
+* 代码
+~~~python
+# 跟逻辑回归和SVM的线性分类相似
+from sklearn.linear_model impoer SGDClassifier
+clf = SGD(loss="hinge",penalty="l2")
+clf.fit(x,y)
+clf.predict(x_test)
+~~~
+* **loss function**: hinge(linear Support Vector Machine),modified_huber(smoothed hinge loss),log(logistic regression)
+* **penalty**:l2,l1,elasticnet
+* SGD可以作为多类分类器
+
+### SGDRegressor
+* 适用线性回归（大量训练样本，>10,000）
+* loss function:
+  1. squared_loss: Ordinary least squares
+  2. huber:
+  3. epsilon_insensitive: linear Support VectorMachine
+* 特点
+  1. Sensitive to feature scaling.
+  ~~~python
+  from sklearn.preprocessing import StandardScaler
+  scaler = StandardScaler()
+  scaler.fit(X_train)
+  X_train = scaler.transform(X_train)
+  X_test = scaler.transform(X_test)
+  ~~~
+  2. Finding a reasonable regularization term \alpha is best done using GridSearchCV, usually in the range 10.0**-np.arange(1,7).
+
+## Nearest neighbors
+### 特点
+* sklearn.neighbors provides functionality for unsupervised and supervised neighbors-based learning methods.
