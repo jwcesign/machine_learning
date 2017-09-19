@@ -371,5 +371,40 @@ clf.predict(x_test)
   2. Finding a reasonable regularization term \alpha is best done using GridSearchCV, usually in the range 10.0**-np.arange(1,7).
 
 ## Nearest neighbors
-### 特点
 * sklearn.neighbors provides functionality for unsupervised and supervised neighbors-based learning methods.
+### Unsupervised Nearest Neighbors
+* It acts as a uniform interface to three different nearest neighbors algorithms: BallTree, KDTree, and a brute-force algorithm based on routines in sklearn.metrics.pairwise. The choice of neighbors search algorithm is controlled through the keyword 'algorithm', which must be one of ['auto', 'ball_tree', 'kd_tree', 'brute']. When the default value 'auto' is passed, the algorithm attempts to determine the best approach from the training data.
+* 代码
+~~~python
+# NearestNeighbors, 结果可以看到离x_test最近的2个点
+from numpy as np
+from sklearn.neighbors import NearestNeighbors
+x = np.array([[-,-1],[-2,-1],[-3,-2],[1,1],[2,,1],[3,2]])
+x_test = np.array([[4,4]])
+nbrs = NearestNeighbors(n_neighbors=2,algorithm='ball_tree')
+nbrs.fit(x)
+nbrs.kneighbors_graph(x_test).toarray()
+~~~
+
+### KDTree And BallTree
+* [KDTree](http://blog.csdn.net/silangquan/article/details/41483689): **不适用于高维**
+* [BallTree](http://blog.csdn.net/pipisorry/article/details/53156836): **慢于KDtree,但适用于高维**
+*  **Under some circumstances, it is better to weight the neighbors such that nearer neighbors contribute more to the fit.**
+* 代码
+~~~python
+# 或者 BallTree
+from sklearn.neighbors import KDTree
+kdt = KDTree(x)
+kdt.query(x_test,k=2,return_distance=False)
+~~~
+
+### Nearest Neighbors Regression
+* **KNeighborsRegressor** and **RadiusNeighborsRegressor**
+* 依然可以设置weights参数
+* 代码
+~~~python
+from sklearn import neighbors
+knn = neighbors.KNeighborsRegressor(n_neighbors,weights='uniform/distance')
+knn.fit(x,y)
+knn.predict(x_test)
+~~~

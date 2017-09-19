@@ -24,3 +24,24 @@ def plotboundary(x,y,plt,clf):
     # plot decision boundary and margins
     ax.contour(XX, YY, Z, colors='k', levels=[0], alpha=0.5,linestyles=['--', '-', '--'])
     plt.show()
+
+def plotColormap(x,y,plt,clf,classses):
+    '''
+    画决策边界图，不同的类，不同的颜色, classses为类的数目，也就是y中不同数的个数
+    适用于二维，其他维数不行
+    '''
+    from matplotlib.colors import ListedColormap
+    import numpy as np
+    # step size in the mesh
+    h = 0.02
+    x_min, x_max = x[:, 0].min() - 1, x[:, 0].max() + 1
+    y_min, y_max = x[:, 1].min() - 1, x[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),np.arange(y_min, y_max, h))
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    plt.figure()
+    plt.pcolormesh(xx,yy,Z)
+    plt.scatter(x[:,0],x[:,1],c=y,edgecolor='k')
+    plt.xlim()
+    plt.ylim()
+    plt.show()
