@@ -408,3 +408,28 @@ knn = neighbors.KNeighborsRegressor(n_neighbors,weights='uniform/distance')
 knn.fit(x,y)
 knn.predict(x_test)
 ~~~
+
+### Nearest Centroid Classifier
+* 质心距离分类
+* 代码
+~~~python
+from sklearn.neighbors.nearest_centroid import NearestCentroid
+clf = NearestCentroid()
+clf.fit(x,y)
+clf.predict(x_test)
+~~~
+* [例子](http://scikit-learn.org/stable/auto_examples/neighbors/plot_nearest_centroid.html#sphx-glr-auto-examples-neighbors-plot-nearest-centroid-py)
+
+## Gaussian Processes
+* They lose efficiency in high dimensional spaces.
+
+### GPR(Gaussian Process Regression)
+* 核函数的选择
+* 可以给出为多少的可能性
+
+### GPC(Gaussian Process Classifier)
+* 不是很懂，需要把核函数弄清
+
+## Naive Bayes
+* GNB(高斯朴素贝叶斯):[link](http://www.jianshu.com/p/1f01a0f61f35)
+* 用于文本分类(多)
