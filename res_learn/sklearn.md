@@ -430,6 +430,202 @@ clf.predict(x_test)
 ### GPC(Gaussian Process Classifier)
 * 不是很懂，需要把核函数弄清
 
+
+## PLS与CCA
+* ***PLS(partial least squares)*** :[link](http://www.cnblogs.com/jerrylead/archive/2011/08/21/2148625.html)
+* ***CCA***: [link](http://blog.csdn.net/u012409883/article/details/17091861)
+
 ## Naive Bayes
 * GNB(高斯朴素贝叶斯):[link](http://www.jianshu.com/p/1f01a0f61f35)
 * 用于文本分类(多)
+* 高斯,用于连续值（符合高斯分布）
+* Bernoulli Naive Bayes： 解决有些label下feature为时的办法,[link](http://www.cnblogs.com/leoo2sk/archive/2010/09/17/naive-bayesian-classifier.html)
+
+## Decision Trees
+* Classification: code
+~~~python
+from sklearn import tree
+x = [[1,1],[1,0],[0,1],[0,0]]
+y = [1,1,1,0]
+clf = tree.DecisionTreeClassifier()
+clf.fit(x,y)
+clf.predict(...)
+~~~
+* Regression: code
+~~~python
+from skealrn import tree
+x = [...]
+y = [...]
+clf = tree.DecisiionTreeRegressor()
+clf = clf.fit(x,y)
+clf.predict(...)
+~~~
+* ID3,C4.5,C5.0,CART: different algorithms
+
+## Ensemble methods
+* Boosting and Bagging method: [link](http://blog.csdn.net/u010659278/article/details/44527437)
+* Bagging meta-estimator
+~~~python
+from sklearn.ensemble import BaggingClassfier
+from sklearn.neighbors import KNeighborsClassifier
+bagging = BaggingClassfier(KNeighborsClassifier(),max_samples=0.5)
+~~~~
+
+### Forests of randomized trees
+* code:
+~~~python
+from sklearn.ensemble import RandomForestClassifier
+x = [...]
+y = [...]
+clf = RandomForestClassifier(n_estimators=10)
+clf.fit(x,y)
+clf.predict(...)
+~~~
+* Random Forests and Extremely Randomized Trees: [link](http://blog.csdn.net/luoshixian099/article/details/51811945),[link2](http://www.cnblogs.com/gczr/p/7097704.html)
+* Note: Empirical good default values are max_features=n_features for regression problems, and max_features=sqrt(n_features) for classification tasks (where n_features is the number of features in the data). Good results are often achieved when setting max_depth=None in combination with min_samples_split=1 (i.e., when fully developing the trees).
+
+### AdaBoost
+* combine week to strong
+* classify or regression
+~~~python
+from sklearn.ensemble import AdaBoostClassifier
+clf = AdaBoostClassifier(n_estimators=100)
+clf.fit(...)
+clf.predict(...)
+~~~
+
+### Gradient Tree Boosting
+* classify or regression
+* code
+~~~python
+from sklearn.ensemble import GradientBoostingClassifier
+clf = GradientBoostingClassifier(n_estimators=100,learning_rate=1.0)
+clf.fit(...)
+clf.predict(...)
+~~~
+* allow you to add more estimators to an already fitted model.
+
+### Voting Classifier
+* Usage
+~~~python
+# hard voting
+from sklearn.ensemble import VotingClassifier
+eclf = VotingClassifier(estimators=[('A',clf1),('B',clf2)...],voting='hard')
+# eclf = VotingClassifier(estimators=[(...),(...),(...),voting='soft',weights=[...])
+eclf.fit(...)
+eclf.predict(...)
+# soft voting(different classifier weights)
+~~~
+
+
+## Feature Selection
+### Removing features with low variance
+* i.e. features that have the same value in all samples
+* Usage
+~~~python
+from sklearn.feature_selection import VarianceThreshold
+X = [[0, 0, 1], [0, 1, 0], [1, 0, 0], [0, 1, 1], [0, 1, 0], [0, 1, 1]]
+sel = VarianceThreshold(threshold=(0.8*(1-0.8)))
+sel.fit_transform(X)
+~~~
+### Univariate feature selection
+* Usage
+~~~python
+from sklearn.feature_selection importSelectKBest
+from sklearn.feature_selection import chi2
+# 有多种选择方法，这里chi2(classification: chi2,f_classif,mutual_info_classif)
+se = SelectKBest(chi2,k=2).fit(x,y)
+x_new = se.transform(x)
+~~~
+* Warning: Beware not to use a regression scoring function with a classification problem, you will get useless results.
+
+### RFE
+* 递归选择特征
+* Usage
+~~~python
+from sklearn.feature_selection import RFE
+rfe = RFE(estimator=svc,n_feature_to_select=1,step=1)
+~~~
+
+### Feature selection using SelectFromModel
+* Usage
+~~~python
+from sklearn.feature_selection import SelectFromModel
+from sklearn.linear_model import LinearRegression
+lm = LinearModel()
+sfm = SelectFromModel(lm,threshold=0.1)
+x_new = sfm.fit(x,y).transform(x)
+~~~
+
+### L1-based feature selection
+* In particular, sparse estimators useful for this purpose are the linear_model.Lasso for regression, and of linear_model.LogisticRegression and svm.LinearSVC for classification.
+* ***lsvc = LinearSVC(C=0.01, penalty="l1", dual=False).fit(X, y)***
+
+### Tree-based feature selection
+* Usage
+~~~python
+from sklearn.feature_selection import SelectFromModel
+from sklearn.ensemble import ExtraTreesClassifier
+clf = ExtraTreesClassifier()
+model = SelectFromModel(clf,prefit=True)
+x_new = model.transform(x)
+~~~
+
+### Feature selection as part of pipline
+* Usage: [link](http://scikit-learn.org/stable/modules/feature_selection.html)
+
+## Semi-Supervised
+* Semi-supervised learning is a situation in which in your training data some of the samples are not labeled.
+
+## Neural network models
+### Multi-layer Perceptron
+* classification or regression
+* MLP requires tuning a number of hyperparameters such as the number of hidden neurons, layers, and iterations.
+* Usage
+~~~python
+from sklearn.neural_network import MLPClassifier
+clf = MLPClassifier(...)
+clf.fit(x,y)
+clf.predict(x_test)
+~~~
+* Tips:
+  * sensitive to feature scaling, so it is highly recommended to scale your data.
+
+
+## Clustering
+### K-means
+* img:
+![img](http://scikit-learn.org/stable/_images/math/1886f2c69775746ac7b6c1cdd88c53c676839015.png)
+* Usage: ***init='k-means++'***
+~~~python
+from sklearn.cluster import KMeans
+y_pred = KMeans(n_clusters=2).fit_predict(x)
+~~~
+### Mini Batch K-Means
+*  variant of the KMeans algorithm which uses mini-batches to reduce the computation time, while still attempting to optimise the same objective function.
+### Affinity Propagation
+* Affinity Propagation most appropriate for small to medium sized datasets.
+### Mean Shift
+* clustering aims to discover blobs in a smooth density of samples. It is a centroid based algorithm, which works by updating candidates for centroids to be the mean of the points within a given region.
+### Spectral Clustering
+* It works well for a small number of clusters but is not advised when using many clusters.
+### Hierarchical clustering
+* Hierarchical clustering is a general family of clustering algorithms that build nested clusters by merging or splitting them successively.
+### DBSCAN
+* The DBSCAN algorithm views clusters as areas of high density separated by areas of low density.
+### Birch
+* The Birch builds a tree called the Characteristic Feature Tree (CFT) for the given data.
+### Clustering performance evaluation
+#### Adjusted Rand index
+* Given the knowledge of the ground truth class assignments labels_true and our clustering algorithm assignments of the same samples labels_pred, the adjusted Rand index is a function that measures the similarity of the two assignments, ignoring permutations and with chance normalization.
+* Usage
+~~~python
+from sklearn import metrics
+metrics.adjusted_rand_score(label_true,label_pred)
+~~~
+#### Mutual Information based scores
+#### Homogeneity, completeness and V-measure
+#### Fowlkes-Mallows scores
+#### Silhouette Coefficient
+#### Calinski-Harabaz Index
+* If the ground truth labels are not known, the Calinski-Harabaz index (sklearn.metrics.calinski_harabaz_score) can be used to evaluate the model, where a higher Calinski-Harabaz score relates to a model with better defined clusters.

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-def plotboundary(x,y,plt,clf):
+def plot_boundary(x,y,plt,clf):
     '''
     * 函数说明
     * 对二维有效
@@ -25,7 +25,7 @@ def plotboundary(x,y,plt,clf):
     ax.contour(XX, YY, Z, colors='k', levels=[0], alpha=0.5,linestyles=['--', '-', '--'])
     plt.show()
 
-def plotColormap(x,y,plt,clf,classses):
+def plot_colormap(x,y,plt,clf,classses):
     '''
     画决策边界图，不同的类，不同的颜色, classses为类的数目，也就是y中不同数的个数
     适用于二维，其他维数不行
@@ -44,4 +44,14 @@ def plotColormap(x,y,plt,clf,classses):
     plt.scatter(x[:,0],x[:,1],c=y,edgecolor='k')
     plt.xlim()
     plt.ylim()
+    plt.show()
+
+def plot_3d_scatter(x,y,z,color_map):
+    ''''
+    画3维散点图，并根据类标记颜色
+    '''
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.mplot3d import Axes3D
+    ax = plt.subplot(111,projection='3d')
+    ax.scatter(x,y,z,c=color_map,s=1)
     plt.show()
