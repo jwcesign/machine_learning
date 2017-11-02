@@ -496,7 +496,7 @@ clf.predict(...)
 
 ### Gradient Tree Boosting
 * classify or regression
-* code
+* codeS
 ~~~python
 from sklearn.ensemble import GradientBoostingClassifier
 clf = GradientBoostingClassifier(n_estimators=100,learning_rate=1.0)
@@ -629,3 +629,18 @@ metrics.adjusted_rand_score(label_true,label_pred)
 #### Silhouette Coefficient
 #### Calinski-Harabaz Index
 * If the ground truth labels are not known, the Calinski-Harabaz index (sklearn.metrics.calinski_harabaz_score) can be used to evaluate the model, where a higher Calinski-Harabaz score relates to a model with better defined clusters.
+
+## Dimensionality reduction
+### PCA and LDA
+### Incremental PCA
+* The PCA object is very useful, but has certain limitations for large datasets. The biggest limitation is that PCA only supports batch processing, which means all of the data to be processed must fit in main memory. The IncrementalPCA object uses a different form of processing and allows for partial computations which almost exactly match the results of PCA while processing the data in a minibatch fashion. IncrementalPCA makes it possible to implement out-of-core Principal Component Analysis either by:
+### Kernel PCA
+* KernelPCA is an extension of PCA which achieves non-linear dimensionality reduction through the use of kernels.
+### SparsePCA and MiniBatchSparsePCA
+* SparsePCA is a variant of PCA, with the goal of extracting the set of sparse components that best reconstruct the data.
+* Mini-batch sparse PCA (MiniBatchSparsePCA) is a variant of SparsePCA that is faster but less accurate. The increased speed is reached by iterating over small chunks of the set of features, for a given number of iterations.
+### LSA and SVD
+### SparsePCA and MiniBatchSparsePCA
+* SparsePCA is a variant of PCA, with the goal of extracting the set of sparse components that best reconstruct the data.
+
+Mini-batch sparse PCA (MiniBatchSparsePCA) is a variant of SparsePCA that is faster but less accurate. The increased speed is reached by iterating over small chunks of the set of features, for a given number of iterations.
