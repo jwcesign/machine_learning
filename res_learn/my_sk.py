@@ -147,3 +147,168 @@ def diff_value(x,y,delete_state='false',threshold=3,plot_state='false'):
         x = delete(x,delete_vector,0)
         y = delete(y,delete_vector,0)
         return x,y
+
+def normal_one_check(x,plot_state='false'):
+    '''
+    基于正态分布的一元离群点检测方法
+    画图仅适用于二维
+    '''
+    import matplotlib.pyplot as plt
+    feature_length = x.shape[1]
+    sample_num = x.shape[0]
+    out_vector = []
+    for i in range(feature_length):
+        u = sum(x[:,i])/sample_num
+        theta_2 = sum((x[:,i]-u)**2)/sample_num
+        m = x[:,i]-u
+        index = m>3*theta_2
+        for j in range(sample_num):
+            if index[j] == True and j not in out_vector:
+                out_vector.append(j)
+
+    total = [0]*sample_num
+    for i in out_vector:
+        total[i] = 1
+    if plot_state == 'true':
+        plt.scatter(x[:,0],x[:,1],c=total,s=30,marker='+')
+        plt.show()
+    return out_vector
+
+def one_normal_check(x,pro_threshold,plot_state='false'):
+    '''
+    基于一元正态分布的离群点检测方法
+    画图适用于二维
+    '''
+    import matplotlib.pyplot as plt
+    from numpy import mean,sqrt,exp,pi
+    feature_length = x.shape[1]
+    sample_num = x.shape[0]
+    out_vector = []
+    u_vector = mean(x,0)
+    theta_2_vector = sum((x-u_vector)**2,0)/sample_num
+    for i in range(sample_num):
+        p = 1
+        for j in range(feature_length):
+            p *= exp(-((x[i,j]-u_vector[j])**2)/(2*theta_2_vector[j]))
+            p /= (sqrt(2*pi)*sqrt(theta_2_vector[j]))
+        if p<pro_threshold and i not in out_vector:
+            out_vector.append(i)
+    if plot_state == 'true':
+        total = [0]*sample_num
+        for i in out_vector:
+            total[i] = 1
+        if 0 not in total:
+            plt.scatter(x[:,0],x[:,1],c='y',s=30,marker='+')
+        else:
+            plt.scatter(x[:,0],x[:,1],c=total,s=30,marker='+')
+        plt.show()
+    return out_vector
+
+def mul_normal_check(x,pro_threshold,plot_state='false'):
+    '''
+    多元高斯分布的异常点检测
+    画图适用于二维
+    变量之间有关系时适用
+    '''
+    from numpy import sqrt,exp,pi,mean,cov,linalg,mat
+    import matplotlib.pyplot as plt
+    c = cov(x.T)
+    u = mean(x,0)
+    feature_length = x.shape[1]
+    sample_num = x.shape[0]
+    out_vector = []
+    for i in range(sample_num):
+        p = 1
+        p *= exp(-(1/2.0)*(x[i]-u)*mat(c).I*mat((x[i]-u)).T)
+        p /= (2*pi)**(feature_length/2.0)*(linalg.det(c)**0.5)
+        if p<pro_threshold and i not in out_vector:
+            out_vector.append(i)
+    if plot_state == 'true':
+        total = [0]*sample_num
+        for i in out_vector:
+            total[i] = 1
+        plt.scatter(x[:,0],x[:,1],c=total,s=30,marker='+')
+        plt.show()
+    return out_vector
+
+def mad_check(x,dis_threshold,plot_state='false'):
+    '''
+    用 Mahalanobis(马氏) 距离检测多元离群点
+    notes:当你的数据表现出非线性关系关系时，你可要谨慎使用该方法了，马氏距离仅仅把他们作为线性关系处理。
+    可以把此距离作为异常点检测的一句
+    '''
+    from numpy import mat,sqrt,mean,linalg,cov
+    import matplotlib.pyplot as plt
+    u = mean(x,0)
+    c = cov(x.T)
+    sample_num = x.shape[0]
+    out_vector = []
+    for i in range(sample_num):
+        mad = sqrt(mat(x[i]-u)*mat(c).I*mat(x[i]-u).T)
+        print mad
+        if mad > dis_threshold:
+            out_vector.append(i)
+    if plot_state == 'true':
+        total = [0]*sample_num
+        for i in out_vector:
+            total[i] = 1
+        plt.scatter(x[:,0],x[:,1],c=total,s=30,marker='+')
+        plt.show()
+    return out_vector
+
+def x2_check(x,threshold,plot_state='false'):
+    from numpy import mean
+    u = mean(x,0)
+    sample_num = x.shape[0]
+    out_vector = []
+    for i in range(sample_num):
+        x2 = sum(((x[i]-u)**2)/abs(u))
+        if x2 > threshold:
+            out_vector.append(i)
+    if plot_state == 'true':
+        import matplotlib.pyplot as plt
+        total = [0]*sample_num
+        for i in out_vector:
+            total[i] = 1
+        plt.scatter(x[:,0],x[:,1],c=total,s=30,marker='+')
+        plt.show()
+    return out_vector
+
+def isof_check(x,plot_state='false',con=0.01):
+    from sklearn.ensemble import IsolationForest
+    clf = IsolationForest(contamination=con)
+    clf.fit(x)
+    sample_num = x.shape[0]
+    total = [0]*sample_num
+    out_vector = []
+    py = clf.predict(x)
+    for i in range(sample_num):
+        if py[i] == -1:
+            total[i] = 1
+            out_vector.append(i)
+    if plot_state == 'true':
+        import matplotlib.pyplot as plt
+        plt.scatter(x[:,0],x[:,1],c=total,s=30,marker='+')
+        plt.show()
+    return out_vector
+
+class LOF():
+    """
+    LOF for using
+    """
+    import numpy as np
+    plot_state = False
+    x = None
+    sample_num = 0
+    feature_length = 0
+    k_neighbors = 0
+
+    def __init__(slef,k=10):
+        self.k_neighbors = k
+
+    def fit(self,x):
+        self.x = x
+        self.sample_num = x.shape[0]
+        self.feature_length = x.shape[1]
+        dis_array = zeros((sample_num,sample_num-1))
+        for i in range(sample_num):
