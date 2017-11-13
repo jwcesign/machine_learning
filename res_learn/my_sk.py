@@ -291,24 +291,3 @@ def isof_check(x,plot_state='false',con=0.01):
         plt.scatter(x[:,0],x[:,1],c=total,s=30,marker='+')
         plt.show()
     return out_vector
-
-class LOF():
-    """
-    LOF for using
-    """
-    import numpy as np
-    plot_state = False
-    x = None
-    sample_num = 0
-    feature_length = 0
-    k_neighbors = 0
-
-    def __init__(slef,k=10):
-        self.k_neighbors = k
-
-    def fit(self,x):
-        self.x = x
-        self.sample_num = x.shape[0]
-        self.feature_length = x.shape[1]
-        dis_array = zeros((sample_num,sample_num-1))
-        for i in range(sample_num):

@@ -36,3 +36,20 @@ plt.show()
   * cook's D:适用与回归模型，原理见代码：
   ![img](http://www.zhihu.com/equation?tex=D%7B_i%7D%3D%5Cfrac%7B%5Csum_%7Bj%3D1%7D%5E%7Bn%7D%5Cleft%28+%5Chat%7BY%7D_%7Bj%7D+-+%5Chat%7BY%7D_%7Bj+%5Cleft%28i+%5Cright%29%7D+%5Cright%29%5E%7B2%7D%7D%7Bp+%5Ctimes+MSE%7D)
 5. 其他：[link](blog.csdn.net/mr_tyting/article/details/77371157)
+### 补充
+#### LOF: local outlier factor
+> 可以通过密度检测来给定一个点为异常点的程度，可以解决分布不均的问题。
+
+![img](http://img.blog.csdn.net/20160618150545625)
+#### DBSCAN: 可用与异常点检测，但不是很好
+> [详解](http://blog.csdn.net/itplus/article/details/10088625)
+
+## 2.数据不均衡
+> 如果不均衡比例超过4:1，分类器就会偏向于大的类别。
+### 扩充数据
+### 对数据进行重采样
+* 过采样：对小类的数据样本进行过采样来增加小类的数据样本个数，即采样的个数大于该类样本的个数。
+* 欠采样：对大类的数据样本进行欠采样来减少大类的数据样本个数，即采样的个数少于该类样本的个数。
+* 合成样本：SMOTE算法。
+* 使用带惩罚的模型：可以为每类给定一个权重。比如通过给观测值少的类较大的代价。常见的比如penalized-SVM或者penalized-LDA。
+* Note: 一般情况下欠采样效果会更好。
