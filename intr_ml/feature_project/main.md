@@ -60,6 +60,6 @@ plt.show()
 
 ### 补充
 #### Adaboost
-![img](http://my.csdn.net/uploads/201204/26/1335428125_1739.png)
+![img](https://raw.githubusercontent.com/jwcesign/machine_learning/master/pic_save/1335428125_1739.png)
 
 [详细](http://www.360doc.com/content/14/1109/12/20290918_423780183.shtml)
